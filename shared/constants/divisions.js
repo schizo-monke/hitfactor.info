@@ -65,6 +65,62 @@ export const hfuDivisions = [
     short: "car",
   },
 ];
+
+export const scsaDivisions = [
+  {
+    long: "Carry Optics",
+    short: "scsa:co",
+  },
+  {
+    long: "Open",
+    short: "scsa:open",
+  },
+  {
+    long: "Limited",
+    short: "scsa:ltd",
+  },
+  {
+    long: "Single Stack",
+    short: "scsa:ss",
+  },
+  {
+    long: "Production",
+    short: "scsa:prod",
+  },
+  {
+    long: "Optical Sight Revolver",
+    short: "scsa:osr",
+  },
+  {
+    long: "Iron Sight Revolver",
+    short: "scsa:isr",
+  },
+  {
+    long: "PCC Optic",
+    short: "scsa:pcco",
+  },
+  {
+    long: "PCC Iron",
+    short: "scsa:pcci",
+  },
+  {
+    long: "Rimfire Rifle Open",
+    short: "scsa:rfro",
+  },
+  {
+    long: "Rimfire Rifle Iron",
+    short: "scsa:rfri",
+  },
+  {
+    long: "Rimfire Pistol Open",
+    short: "scsa:rfpo",
+  },
+  {
+    long: "Rimfire Pistol Iron",
+    short: "scsa:rfpi",
+  },
+]
+
 export const hfuDivisionsShortNames = hfuDivisions.map((d) => d.short);
 
 export const sportForDivision = (division) => {
@@ -81,7 +137,7 @@ export const sportForDivision = (division) => {
 };
 
 export const sportName = (code) =>
-  ({ hfu: "Hit Factor", pcsl: "PCSL", uspsa: "USPSA" }[code] || "USPSA");
+  ({ hfu: "Hit Factor", pcsl: "PCSL", uspsa: "USPSA" , scsa: "Steel Challenge"}[code] || "USPSA");
 
 export const hfuDivisionCompatabilityMap = {
   // from USPSA

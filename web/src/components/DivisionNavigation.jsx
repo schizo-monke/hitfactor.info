@@ -6,11 +6,11 @@ import {
   divisionChangeMap,
   hfuDivisions,
   uspsaDivisions,
-  sportName,
+  sportName, scsaDivisions
 } from "../../../shared/constants/divisions";
 import usePreviousEffect from "../utils/usePreviousEffect";
 
-const enableSportSelector = false;
+const enableSportSelector = true;
 
 const SportSelector = ({ sportCode, setSportCode }) => {
   const menu = useRef(null);
@@ -21,6 +21,11 @@ const SportSelector = ({ sportCode, setSportCode }) => {
           label: "USPSA",
           className: sportCode === "uspsa" && "focused-menu-item",
           command: () => setSportCode("uspsa"),
+        },
+        {
+          label: "SCSA",
+          className: sportCode === "scsa" && "focused-menu-item",
+          command: () => setSportCode("scsa"),
         },
         {
           label: "HitFactor (Unified)",
@@ -63,16 +68,27 @@ const SportSelector = ({ sportCode, setSportCode }) => {
 };
 
 const divisionForSportAndIndex = (sport, index) => {
-  if (sport === "hfu") {
-    // minus1 the tabViewIndex, because it counts SportSelector as index 0
-    return hfuDivisions[index - 1]?.short.toLowerCase();
+  switch(sport) {
+    case 'hfu':
+      return hfuDivisions[index - 1]?.short.toLowerCase();
+    case 'scsa':
+      return scsaDivisions[index - 1]?.short.toLowerCase();
+    case 'uspsa':
+    default:
+      return uspsaDivisions[index - 1]?.short_name?.toLowerCase?.();
   }
-
-  // minus1 the tabViewIndex, because it counts SportSelector as index 0
-  return uspsaDivisions[index - 1]?.short_name?.toLowerCase?.();
 };
 
 const indexForDivision = (division) => {
+  // scsa
+  const scsaIndex = scsaDivisions.findIndex(
+    (c) => c.short.toLowerCase() === (division || "invalid")
+  );
+  if (scsaIndex >= 0) {
+    // plusOne the dataIndex, because TabView counts SportSelector as index 0
+    return scsaIndex + 1;
+  }
+
   // hfu
   const hfuIndex = hfuDivisions.findIndex(
     (c) => c.short.toLowerCase() === (division || "invalid")
@@ -107,6 +123,9 @@ export const DivisionNavigation = ({ onSelect, uspsaOnly }) => {
 
   usePreviousEffect(
     ([prevSportCode]) => {
+      if (sportCode === 'scsa'  || prevSportCode === 'scsa') {
+        return;
+      }
       if (prevSportCode === sportCode) {
         return;
       }
@@ -141,6 +160,15 @@ export const DivisionNavigation = ({ onSelect, uspsaOnly }) => {
             className="p-0 text-sm md:text-base"
           />
         ))),
+    ...(sportCode !== "scsa"
+      ? []
+      : scsaDivisions.map((division) => (
+        <TabPanel
+          key={division.short}
+          header={division.long}
+          className="p-0 text-sm md:text-base"
+        />
+      ))),
   ];
 
   return (
